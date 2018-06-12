@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单支付</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="apple-touch-fullscreen" content="yes">
+
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body ng-app="myApp"  ng-controller="ctrl1">
+    <header class="header">
+        <p class="head-left"><i class="fa fa-angle-left f20"></i></p>
+        <h2>订单支付</h2>
+        <p class="head-right"><i class="fa fa-reorder f18"></i><span></span></p>
+    </header>
+    <section class="section">
+        <div class="area">
+            <i class="fa fa-angle-right right f20"></i>
+            <h2>路飞 <span>183****6334</span></h2>
+            <p><i class="fa fa-bolt f20"></i><span>北京市海淀区知春路北京市海淀区知春路北京市海淀区 知春路</span></p>
+        </div>
+        <div class="imgs">
+            <img src="images/img01.png" alt="img01">
+        </div>
+        <div class="shop">
+            <h2><i class="fa fa-home f20"></i>恒之然旗舰店</h2>
+            <dl>
+                <dt><img src="images/img02.png" alt="img02"></dt>
+                <dd>
+                    <p class="text-nowrap">维维嚼益嚼水果大豆棒橙味维维嚼 益嚼水果大豆棒橙味...维维嚼益嚼水果大豆棒橙味维维嚼 益嚼水果大豆棒橙味...维维嚼益嚼水果大豆棒橙味维维嚼 益嚼水果大豆棒橙味...</p>
+                    <div class="bot">
+                        <div class="bot-t">
+                            <h3>￥<span>{{price}}</span></h3>
+                            <p>￥1000.00</p>
+                        </div>
+                        <div class="bot-b">
+                            <input ng-click="sub()" value="-" ng-disabled="tag"><span>{{num}}</span><input ng-click="add()" value="+" ng-disabled="tags">
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+            <div class="shop-box">
+                <p>商品总金额:   <span>¥<b>{{price}}</b></span></p>
+                <p>运费:   <span><b>{{kuaid}}</b></span></p>
+                <p>总额(含运费):   <span class="red">¥<b>{{sum}}</b></span></p>
+            </div>
+        </div>
+        <div class="wei">
+        <ul class="list">
+            <li>余额支付 ¥{{lip}}<label class="checkBtn"><input type="checkbox" ng-model="pay" ng-click="myFun()"><span><b></b></span></label></li>
+            <li>奖金支付 ¥{{lip}}<label class="checkBtn"><input type="checkbox" ng-model="pays" ng-click="myFuns()"><span><b></b></span></label></li>
+            <li>其他支付方式 <i class="fa fa-angle-right f26"></i></li>
+        </ul>
+            <p class="ding" ng-hide="sh">金额不足，请选择其他支付方式！</p>
+        </div>
+    </section>
+    <footer class="footer">
+        <div>
+            <h2>总计: ￥<span>{{sums}}</span></h2>
+            <p>(含运费)</p>
+        </div>
+        <button class="btn">提交订单</button>
+    </footer>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script>
+        var myApp=angular.module("myApp",[]);
+        myApp.controller("ctrl1",function($scope){
+            $scope.price= (988).toFixed(2);
+            $scope.num= 1;
+            $scope.kuaid= 10;
+            $scope.sh=true;
+            $scope.lip= (100).toFixed(2);
+            $scope.tag=false;
+            $scope.tags=false;
+            $scope.sum= (($scope.price*$scope.num)+ $scope.kuaid).toFixed(2);
+            $scope.sums= (($scope.price*$scope.num)+ $scope.kuaid).toFixed(2);
+            //点击减
+            $scope.sub=function(){
+               
+                if($scope.num<=1){
+                    $scope.tag=true;
+                    $scope.tags=false;
+                    $scope.kuaid= 0;
+                }else{
+                    $scope.tag=false;
+                    $scope.kuaid= 10;
+                }
+                $scope.num--;
+                $scope.sum= (($scope.price*$scope.num)+ $scope.kuaid).toFixed(2);
+                $scope.sums= (($scope.price*$scope.num)+ $scope.kuaid).toFixed(2);
+            }
+            //点击加
+            $scope.add=function(){
+                $scope.num++;
+                if($scope.num>=10){
+                    $scope.tags=true;
+                    $scope.tag=false;
+                    $scope.kuaid= 10;
+                }else{
+                    $scope.tags=false;
+                    $scope.kuaid= 10;
+                }
+                $scope.sum= (($scope.price*$scope.num)+ $scope.kuaid).toFixed(2);
+                $scope.sums= (($scope.price*$scope.num)+ $scope.kuaid).toFixed(2);
+            }
+            //
+            $scope.myFuns=function(){
+                if($scope.pays){
+                   $scope.sums= ((($scope.price*$scope.num)+ $scope.kuaid)-$scope.lip).toFixed(2); 
+                }else{
+                    $scope.sums= (($scope.price*$scope.num)+ $scope.kuaid).toFixed(2); 
+                }
+            }
+            //
+            $scope.myFun=function(){
+                if($scope.pay){
+                    $scope.pay=false;
+                    $scope.sh=false;
+                }
+            }
+            
+        })
+    </script>
+</body>
+</html>
